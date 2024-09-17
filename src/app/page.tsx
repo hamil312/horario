@@ -96,7 +96,7 @@ export default function Home() {
 
         {daysOfWeek.map((day) => (
           <section key={day} className={`bg-white h-full`}>
-            <h2 className="font-bold text-center">{day}</h2>
+            <h2 className="font-bold text-center text-black">{day}</h2>
             {hoursOfDay.map((hour) => (
               <section key={`${day}-${hour}`} className="relative border border-gray-200 h-16">
                 {tasks
@@ -126,10 +126,10 @@ export default function Home() {
       {isModalOpen && (
         <section className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
           <section className="bg-white p-6 rounded-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Añadir nueva tarea</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">Añadir nueva tarea</h2>
             <form onSubmit={handleSaveTask}>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Título</label>
+                <label className="block font-bold mb-2 text-black">Título</label>
                 <input
                   type="text"
                   name="title"
@@ -140,7 +140,7 @@ export default function Home() {
                 />
               </section>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Descripción</label>
+                <label className="block font-bold mb-2 text-black">Descripción</label>
                 <textarea
                   name="description"
                   className="w-full px-3 py-2 border rounded-lg"
@@ -150,30 +150,30 @@ export default function Home() {
                 ></textarea>
               </section>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Día</label>
+                <label className="block font-bold mb-2 text-black">Día</label>
                 <select
                   name="day"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   value={newTask.day}
                   onChange={handleInputChange}
                 >
                   {daysOfWeek.map((day) => (
-                    <option key={day} value={day}>
+                    <option key={day} value={day} className="text-black">
                       {day}
                     </option>
                   ))}
                 </select>
               </section>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Hora</label>
+                <label className="block font-bold mb-2 text-black">Hora</label>
                 <select
                   name="time"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   value={newTask.time}
                   onChange={handleInputChange}
                 >
                   {hoursOfDay.map((hour) => (
-                    <option key={hour} value={hour}>
+                    <option key={hour} value={hour} className="text-black">
                       {hour}
                     </option>
                   ))}
