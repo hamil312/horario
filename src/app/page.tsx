@@ -2,11 +2,17 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
+  interface Task {
+    title: string;
+    description: string;
+    day: string;
+    time: string;
+  }
   const [isTaskOpen, setTaskOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [editingTaskIndex, setEditingTaskIndex] = useState(null);
-  const [newTask, setNewTask] = useState({
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [editingTaskIndex, setEditingTaskIndex] = useState<number | null>(null);
+  const [newTask, setNewTask] = useState<Task>({
     title: "",
     description: "",
     day: "Lunes",
@@ -21,7 +27,7 @@ export default function Home() {
     }
   }, []);
 
-  const saveTasksToLocalStorage = (updatedTasks) => {
+  const saveTasksToLocalStorage = (updatedTasks: Task[]) => {
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   };
 
@@ -34,7 +40,7 @@ export default function Home() {
 
   const closeModal = () => setIsModalOpen(false);
 
-  const openTask = (task, index) => {
+  const openTask = (task: Task, index: number) => {
     setNewTask(task); // Cargar la tarea seleccionada para editar
     setEditingTaskIndex(index); // Guardar el índice de la tarea seleccionada
     setTaskOpen(true);
@@ -45,7 +51,7 @@ export default function Home() {
     setEditingTaskIndex(null);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewTask((prev) => ({
       ...prev,
@@ -53,7 +59,7 @@ export default function Home() {
     }));
   };
 
-  const handleSaveTask = (e) => {
+  const handleSaveTask = (e: React.FormEvent) => {
     e.preventDefault();
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
@@ -62,13 +68,15 @@ export default function Home() {
     closeModal();
   };
   
-  const handleEditTask = (e) => {
+  const handleEditTask = (e: React.FormEvent) => {
     e.preventDefault();
-    const updatedTasks = [...tasks];
-    updatedTasks[editingTaskIndex] = newTask; // Actualizar la tarea editada
-    setTasks(updatedTasks);
-    saveTasksToLocalStorage(updatedTasks); // Guardar tareas actualizadas en localStorage
-    closeTask();
+    if (editingTaskIndex !== null) {
+      const updatedTasks = [...tasks];
+      updatedTasks[editingTaskIndex] = newTask;
+      setTasks(updatedTasks);
+      saveTasksToLocalStorage(updatedTasks);
+      closeTask();
+    }
   };
   
   const handleDeleteTask = () => {
@@ -79,7 +87,7 @@ export default function Home() {
   };
 
   const daysOfWeek = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-  const hoursOfDay = [...Array(24).keys()].map((hour) => `${hour.toString().padStart(2, "0")}:00`);
+  const hoursOfDay = Array.from(Array(24).keys()).map((hour) => `${hour.toString().padStart(2, "0")}:00`);
 
   return (
     <div>
@@ -133,7 +141,7 @@ export default function Home() {
                 <input
                   type="text"
                   name="title"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   placeholder="Título de la tarea"
                   value={newTask.title}
                   onChange={handleInputChange}
@@ -143,7 +151,7 @@ export default function Home() {
                 <label className="block font-bold mb-2 text-black">Descripción</label>
                 <textarea
                   name="description"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   placeholder="Descripción de la tarea"
                   value={newTask.description}
                   onChange={handleInputChange}
@@ -199,58 +207,58 @@ export default function Home() {
         </section>
       )}
 
-      {/* Popup para editar tarea */}
+      {/* Modal para editar tarea */}
       {isTaskOpen && (
         <section className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
           <section className="bg-white p-6 rounded-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Editar tarea</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">Editar tarea</h2>
             <form onSubmit={handleEditTask}>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Título</label>
+                <label className="block font-bold mb-2 text-black">Título</label>
                 <input
                   type="text"
                   name="title"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   placeholder="Título de la tarea"
                   value={newTask.title}
                   onChange={handleInputChange}
                 />
               </section>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Descripción</label>
+                <label className="block font-bold mb-2 text-black">Descripción</label>
                 <textarea
                   name="description"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   placeholder="Descripción de la tarea"
                   value={newTask.description}
                   onChange={handleInputChange}
                 ></textarea>
               </section>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Día</label>
+                <label className="block font-bold mb-2 text-black">Día</label>
                 <select
                   name="day"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   value={newTask.day}
                   onChange={handleInputChange}
                 >
                   {daysOfWeek.map((day) => (
-                    <option key={day} value={day}>
+                    <option key={day} value={day} className="text-black">
                       {day}
                     </option>
                   ))}
                 </select>
               </section>
               <section className="mb-4">
-                <label className="block font-bold mb-2">Hora</label>
+                <label className="block font-bold mb-2 text-black">Hora</label>
                 <select
                   name="time"
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg text-gray-500"
                   value={newTask.time}
                   onChange={handleInputChange}
                 >
                   {hoursOfDay.map((hour) => (
-                    <option key={hour} value={hour}>
+                    <option key={hour} value={hour} className="text-black">
                       {hour}
                     </option>
                   ))}
