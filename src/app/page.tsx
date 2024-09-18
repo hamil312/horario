@@ -207,12 +207,12 @@ export default function Home() {
         </section>
       )}
 
-      {/* Modal para editar tarea */}
+      {/* Modal para editar tarea se parece al anterior solo que llama a algunas funciones distintas*/}
       {isTaskOpen && (
         <section className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
           <section className="bg-white p-6 rounded-lg w-96">
             <h2 className="text-xl font-bold mb-4 text-black">Editar tarea</h2>
-            <form onSubmit={handleEditTask}>
+            <form onSubmit={handleEditTask}>{/*Llama a la función para editar tarea*/}
               <section className="mb-4">
                 <label className="block font-bold mb-2 text-black">Título</label>
                 <input
